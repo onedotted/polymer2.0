@@ -1,6 +1,6 @@
-<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<dom-module id="drag-element-base">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<dom-module id="drag-element">
     <template>
         <custom-style>
             <style is="custom-style" include="iron-flex">
@@ -19,9 +19,9 @@
 
     </template>
     <script>
-        class DragElementBase extends Polymer.Element {
+        class DragElement extends Polymer.Element {
             static get is() {
-                return 'drag-element-base';
+                return 'drag-element';
             }
 
             static get properties() {
@@ -66,6 +66,6 @@
 
         }
 
-        customElements.define(DragElementBase.is, DragElementBase);
+        customElements.define(DragElement.is, DragElement);
     </script>
 </dom-module>

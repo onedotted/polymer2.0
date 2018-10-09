@@ -1,14 +1,14 @@
-<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="drag-element-base.html">
-<dom-module id="drag-element">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="drag-element.html">
+<dom-module id="demo-element">
     <template>
         <custom-style>
             <style is="custom-style">
-                drag-element-base {
+                drag-element {
                     /*--drag-element-width: 100%;*/
                     /*--drag-element-height: 50%;*/
                 }
-                drag-element-base > * {
+                drag-element > * {
                     width: 40px;
                     height: 40px;
                     border-radius: 50%;
@@ -16,26 +16,26 @@
                     text-align: center;
                     line-height: 40px;
                 }
-                drag-element-base[location="true"]>*{
+                drag-element[location="true"]>*{
                     position: absolute;
                 }
             </style>
         </custom-style>
 
-            <drag-element-base drag-zone="{{dragZone}}">
+            <drag-element drag-zone="{{dragZone}}">
                 <div draggable="true">1</div>
                 <div draggable="true">2</div>
                 <div draggable="true">3</div>
                 <div draggable="true">4</div>
                 <div draggable="true">5</div>
                 <div draggable="true">6</div>
-            </drag-element-base>
-            <drag-element-base  drag-zone="{{dragZone}}" location="true"></drag-element-base>
+            </drag-element>
+            <drag-element  drag-zone="{{dragZone}}" location="true"></drag-element>
     </template>
     <script>
-        class DragElement extends Polymer.Element {
+        class DemoElement extends Polymer.Element {
             static get is() {
-                return 'drag-element';
+                return 'demo-element';
             }
 
             static get properties() {
@@ -46,7 +46,7 @@
 
 
         }
-        customElements.define(DragElement.is, DragElement);
+        customElements.define(DemoElement.is, DemoElement);
     </script>
 </dom-module>
 
@@ -56,4 +56,4 @@
         padding: 0;
      }
 </style>
-<drag-element></drag-element>
+<demo-element></demo-element>

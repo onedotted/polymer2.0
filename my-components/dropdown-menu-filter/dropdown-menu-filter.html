@@ -1,0 +1,118 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+<!-- Ensure Web Animations polyfill is loaded since neon-animation 2.0 doesn't import it -->
+<!--<link rel="import" href="../../bower_components/neon-animation/web-animations.html">-->
+<link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/gestures.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html" >
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu-icons.html">
+
+<!--example-->
+
+<style>
+    dropdown-menu-filter{
+        --dropdown-menu-filter-width:400px;
+        --dropdown-menu-filter-list-height:400px;
+    }
+</style>
+<dropdown-menu-filter label="String" list="Array"> </dropdown-menu-filter>
+
+<meta charset="utf-8">
+<dom-module id="dropdown-menu-filter">
+    <template>
+        <style>
+            paper-listbox{
+                border: 1px solid #f5f5f5;
+                border-bottom: 1px solid #e0e0e0;
+                box-shadow: 1px 1px 10px 1px  #e0e0e0;
+                height: var(--dropdown-menu-filter-list-height);
+                display: none;
+                max-height: 400px;
+                overflow: auto
+            }
+            paper-input{
+                --paper-input-container:{
+                    padding: 0;
+                }
+            }
+            iron-icon{
+                position: absolute;
+                right: 0;
+            }
+
+            iron-icon{
+                position: absolute;
+                right: 0px;
+                bottom: 5px;
+            }
+            #dropdown-menu-filter{
+                width: var(--dropdown-menu-filter-width);
+            }
+
+        </style>
+        <div id="dropdown-menu-filter">
+            <div  style="position: relative;"  on-tap="inputClick">
+                <paper-input label="[[label]]" value="{{search::input}}" spellcheck="false"></paper-input>
+                <iron-icon icon="paper-dropdown-menu:arrow-drop-down" ></iron-icon>
+
+                <paper-ripple ></paper-ripple>
+            </div>
+
+            <paper-listbox selected="{{selected}}"  id="content">
+                <dom-repeat items="[[filteredData]]" >
+                    <template>
+                        <paper-item >[[item]]</paper-item>
+                    </template>
+                </dom-repeat>
+            </paper-listbox>
+        </div>
+    </template>
+    <script>
+        class DropdownMenuFilter extends Polymer.GestureEventListeners(Polymer.Element){
+            static get is() { return 'dropdown-menu-filter';}
+            static get properties(){
+                return {
+                    label: {
+                        type: String
+                    },
+                    list: {
+                        type:Array,
+                    },
+                    filteredData:{
+                        type: Array,
+                    },
+                    selected: {
+                        type: Number,
+                        observer: 'selectedChanged'
+                    },
+                }
+            }
+            static get observers(){
+                return [
+                    'getFilteredData(search, list)'
+                ]
+            }
+            getFilteredData(search, list){
+                let pattern = new RegExp(search);
+                this.filteredData = list.filter((v) =>{
+                  return pattern.test(v)
+                });
+            }
+            selectedChanged(selected){
+                this.search = this.filteredData[selected];
+                this.$.content.style.display = 'none';
+            }
+            inputClick(){
+                this.filteredData = this.list;
+                let content = this.$.content.style;
+                if(content.display == 'block') content.display = 'none';
+                else content.display = 'block';
+            }
+        }
+        window.customElements.define(DropdownMenuFilter.is, DropdownMenuFilter);
+    </script>
+
+</dom-module>

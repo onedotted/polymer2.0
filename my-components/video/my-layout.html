@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<dom-module id="my-video">
+<dom-module id="my-layout">
     <template>
         <custom-style>
             <style is="custom-style" include="iron-flex">
@@ -15,7 +15,7 @@
             </style>
         </custom-style>
         <section id="container" class$="layout horizontal wrap around-justified [[alignV]] ">
-            <dom-repeat items="[[videoList]]" >
+            <dom-repeat items="[[list]]" >
                 <template>
                     <!--替换成视频-->
                     <div style$="[[style]]">
@@ -26,16 +26,16 @@
         </section>
     </template>
     <script>
-        class MyVideo extends Polymer.Element {
+        class MyLayout extends Polymer.Element {
             static get is()
             {
-                return 'my-video';
+                return 'my-layout';
             }
 
             static get properties()
             {
                 return {
-                    videoList: Array,
+                    list: Array,
                     alignV: String
                 }
             }
@@ -43,14 +43,14 @@
             static get observers()
             {
                 return [
-                    'videoListChanged(videoList)'
+                    'listChanged(list)'
                 ]
             }
 
-            videoListChanged(videos){
-                this.initVideoView(videos.length)
+            listChanged(list){
+                this.initView(list.length)
             }
-            initVideoView(len){
+            initView(len){
                 if(len == 3 || len > 4){
                     this.style=  "width: 33.3333%; height:33.3333%;"
                 }else if(len == 2 || len == 4){
@@ -64,7 +64,7 @@
             }
         }
 
-        customElements.define(MyVideo.is, MyVideo);
+        customElements.define(MyLayout.is, MyLayout);
     </script>
 </dom-module>
 
