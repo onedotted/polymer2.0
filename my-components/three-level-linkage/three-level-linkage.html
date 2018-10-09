@@ -1,0 +1,107 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu-shared-styles.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<script href="../../bower_components/web-animations-js/web-animations-next-lite.min.js"></script>
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<meta charset="utf-8">
+<dom-module id="three-level-linkage">
+    <template>
+
+        <paper-dropdown-menu label="请选择">
+            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{layer1Selected}}">
+                <dom-repeat items="[[data]]">
+                    <template>
+                        <paper-item>[[item.name]]</paper-item>
+                    </template>
+                </dom-repeat>
+            </paper-listbox>
+        </paper-dropdown-menu>
+
+
+        <paper-dropdown-menu label="请选择">
+            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{layer2Selected}}">
+                <dom-repeat items="[[layer2]]">
+                    <template>
+                        <paper-item>[[item.name]]</paper-item>
+                    </template>
+                </dom-repeat>
+            </paper-listbox>
+        </paper-dropdown-menu>
+
+        <paper-dropdown-menu label="请选择">
+            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{layer3Selected}}">
+                <dom-repeat items="[[layer3]]">
+                    <template>
+                        <paper-item>[[item.name]]</paper-item>
+                    </template>
+                </dom-repeat>
+
+            </paper-listbox>
+        </paper-dropdown-menu>
+    </template>
+    <script>
+        class ThreeLevelLinkage extends Polymer.Element {
+            static get is() {
+                return 'three-level-linkage';
+            }
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Array,
+                        value: function () {
+                            let arr = [];
+
+                            for (let i = 0; i < 10; i++) {
+                                arr[i] = {name: `a${i}`, value: []};
+                                for (let j = 0; j < 10; j++) {
+                                    arr[i].value[j] = {name: `a${i}b${j}`, value: []};
+                                    for (let k = 0; k < 10; k++) {
+                                        arr[i].value[j].value[k] = {name: `a${i}b${j}c${k}`};
+                                    }
+                                }
+                            }
+
+                            return arr;
+                        }
+                    },
+                    layer2: Array,
+                    layer3: Array,
+                    layer1Selected: Number,
+                    layer2Selected: Number,
+                    layer3Selected: Number
+                }
+
+            }
+
+            static get observers() {
+                return [
+                    'layer1Changed(layer1Selected)',
+                    'layer2Changed(layer2Selected)',
+                ]
+            }
+
+            layer1Changed(index) {
+                this.layer2 = this.data[index].value;
+                this.layer2Selected = 1;             // 刷新
+                setTimeout( () => {
+                    this.layer2Selected = 0;         // 刷新
+                },0);
+            }
+
+            layer2Changed(index) {
+                this.layer3 = this.layer2[index].value;
+                this.layer3Selected = 1;
+                setTimeout( () => {
+                    this.layer3Selected = 0;
+                },0);
+            }
+
+        }
+
+        customElements.define(ThreeLevelLinkage.is, ThreeLevelLinkage);
+    </script>
+</dom-module>
+<three-level-linkage></three-level-linkage>

@@ -1,0 +1,71 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<dom-module id="drag-element-base">
+    <template>
+        <custom-style>
+            <style is="custom-style" include="iron-flex">
+                section {
+                    width: var(--drag-element-width, 100%);
+                    height:  var(--drag-element-height, 40%);
+                    background: url("../../video/images/1.jpg");
+                    position: relative;
+                }
+            </style>
+        </custom-style>
+
+        <section on-dragend="dragend" on-dragenter="dragenter" class="layout horizontal wrap center-justified ">
+            <slot></slot>
+        </section>
+
+    </template>
+    <script>
+        class DragElementBase extends Polymer.Element {
+            static get is() {
+                return 'drag-element-base';
+            }
+
+            static get properties() {
+                return {
+                    targetElement: Object,
+                    dragZone: {
+                        type: Object,
+                        notify: true,
+                    },
+                    location: Boolean
+                }
+            }
+
+            static get observers() {
+                return [
+                    'dragZoneChanged(dragZone)'
+                ]
+            }
+
+            dragZoneChanged(dragZone) {
+                this.targetElement = null;
+            }
+
+            dragenter(e) {
+                e.preventDefault();
+                if (e.target.parentNode.host) this.dragZone = e.target.parentNode.host;
+                if (e.target.tagName !== 'SECTION') this.targetElement = e.target;
+            }
+
+            dragend(e) {
+                if(this.dragZone && this.dragZone.getAttribute('location')) this.elementLocation(e, this.dragZone.shadowRoot.querySelector('section'));
+                if (this.targetElement) this.targetElement.parentNode.insertBefore(e.target, this.targetElement);
+                else this.dragZone.appendChild(e.target);
+            }
+
+            elementLocation(c, p) {
+                let left = (c.clientX - p.offsetLeft - c.target.clientWidth / 2) * 100 / p.clientWidth + '%';
+                let top = (c.clientY - p.offsetTop - c.target.clientHeight / 2) * 100 / p.clientHeight + '%';
+                c.target.style.left = left;
+                c.target.style.top = top;
+            }
+
+        }
+
+        customElements.define(DragElementBase.is, DragElementBase);
+    </script>
+</dom-module>

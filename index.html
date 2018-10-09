@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<input type="text" id="page">
+<button id="button1">open page1</button>
+<button id="button2">open page2</button>
+</body>
+<script>
+
+
+    function openPage(url) {
+        return open(url, "_blank")
+    }
+    let p = new Proxy({}, {
+        set: function (target, key, value) {
+            target[key] = value;
+        }
+    });
+    p.page0 = window;
+
+    button1.onclick = function () {
+        p.page1 = openPage("page1.html")
+    }
+    button2.onclick = function () {
+        p.page2 = openPage("page2.html")
+    }
+    function syncPageValue(val){
+        for(let key in p){
+            p[key].document.querySelector("#page").value = val;
+        }
+    }
+    page.oninput = function(e){
+        syncPageValue(e.target.value)
+    }
+</script>
+
+</html>

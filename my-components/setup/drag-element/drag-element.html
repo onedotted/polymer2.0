@@ -1,0 +1,59 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="drag-element-base.html">
+<dom-module id="drag-element">
+    <template>
+        <custom-style>
+            <style is="custom-style">
+                drag-element-base {
+                    /*--drag-element-width: 100%;*/
+                    /*--drag-element-height: 50%;*/
+                }
+                drag-element-base > * {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    border: 1px solid red;
+                    text-align: center;
+                    line-height: 40px;
+                }
+                drag-element-base[location="true"]>*{
+                    position: absolute;
+                }
+            </style>
+        </custom-style>
+
+            <drag-element-base drag-zone="{{dragZone}}">
+                <div draggable="true">1</div>
+                <div draggable="true">2</div>
+                <div draggable="true">3</div>
+                <div draggable="true">4</div>
+                <div draggable="true">5</div>
+                <div draggable="true">6</div>
+            </drag-element-base>
+            <drag-element-base  drag-zone="{{dragZone}}" location="true"></drag-element-base>
+    </template>
+    <script>
+        class DragElement extends Polymer.Element {
+            static get is() {
+                return 'drag-element';
+            }
+
+            static get properties() {
+                return {
+                    dragZone: Object
+                }
+            }
+
+
+        }
+        customElements.define(DragElement.is, DragElement);
+    </script>
+</dom-module>
+
+<style>
+      html, body{
+        margin: 0;
+        padding: 0;
+     }
+</style>
+<drag-element></drag-element>

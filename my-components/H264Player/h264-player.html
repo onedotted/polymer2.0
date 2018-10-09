@@ -1,0 +1,60 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<dom-module id="h264-player">
+    <template>
+        <div id="playerContainer"></div>
+    </template>
+    <script type="text/javascript" src="websocketvideostream/public/h264/Decoder.js"></script>
+    <script type="text/javascript" src="websocketvideostream/public/h264/YUVCanvas.js"></script>
+    <script type="text/javascript" src="websocketvideostream/public/h264/Player.js"></script>
+    <script>
+        class H264Player extends Polymer.Element {
+            static get is() {
+                return 'h264-player';
+            }
+            static get properties(){
+                return{
+                    url:String,
+                    close:Function,
+                    size:{
+                        typ: Object,
+                        value:{
+                            width: 640,
+                            height: 320
+                        }
+                    }
+                }
+            }
+
+            connectedCallback(){
+                super.connectedCallback();
+                this.initPlayer();
+            }
+            initPlayer() {
+                let player = new Player({
+                    size: this.size
+                });
+
+                this.$.playerContainer.appendChild(player.canvas);
+
+                let strhost = "ws://" + this.url;
+                // Setup the WebSocket connection and start the player
+                let client = new WebSocket(strhost);
+                client.binaryType = 'arraybuffer';
+
+                client.onmessage = (evt) =>{
+                    let messageData = new Uint8Array(evt.data);
+                    player.decode(messageData);
+                }
+
+                client.onerror = (evt) =>{
+                    console.log("error:", evt);
+                }
+
+                this.close = client.close();
+            }
+        }
+
+        customElements.define(H264Player.is, H264Player);
+    </script>
+</dom-module>
+<h264-player></h264-player>

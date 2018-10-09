@@ -1,0 +1,55 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<dom-module id="video-nav">
+    <template>
+        <custom-style>
+            <style is="custom-style" include="iron-flex">
+
+            </style>
+        </custom-style>
+        <div>电子地图</div>
+        <section id="container" >
+            <dom-repeat items="[[videoList]]" >
+                <div class="layout horizontal center">
+                    <iron-icon icon="[[item.icon]]"></iron-icon>
+                    <p> [[item.devicename]]</p>
+                </div>
+            </dom-repeat>
+        </section>
+    </template>
+    <script>
+        class VideoNav extends Polymer.Element {
+            static get is() {
+                return 'video-nav';
+            }
+
+            static get properties() {
+                return {
+                    videoList: Array,
+                    alignV: String
+                }
+            }
+
+            static get observers() {
+                return [
+                    'videoListChanged(videoList)'
+                ]
+            }
+
+            videoListChanged(videoList)
+            {
+
+            }
+        }
+
+        customElements.define(VideoNav.is, VideoNav);
+    </script>
+</dom-module>
+
+<style>
+      html, body{
+        margin: 0;
+        padding: 0;
+     }
+</style>
+<video-nav video-list="[1,2]"></video-nav>

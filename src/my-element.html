@@ -1,0 +1,19 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="test-element.html">
+<dom-module id="my-element">
+    <template>
+
+        <test-element id="test"></test-element>
+    </template>
+    <script>
+        class MyElement extends Polymer.Element{
+            static get is () { return "my-element"; }
+            connectedCallback(){
+                super.connectedCallback();
+                this.$.test.alert();
+            }
+        }
+        customElements.define( MyElement.is, MyElement);
+    </script>
+</dom-module>
+<my-element></my-element>
